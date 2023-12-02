@@ -19,15 +19,23 @@ def build_number(line: str) -> str:
     for index, char in enumerate(line):
         if char in "0123456789":
             yield char
-        elif any(line[index:index+len(word)] == word for word in MAPPING):
-            yield next(str(MAPPING[word]) for word in MAPPING if line[index:index+len(word)] == word)
+
+        mapping = (
+            str(MAPPING[word]) for word in MAPPING 
+            if line[index:index+len(word)] == word
+        )
+
+        if found_mapping := next(mapping, None):
+            yield found_mapping
  
 
 def map_line(line: str) -> int:
     line = "".join(build_number(line))
     line = re.sub(r"[^0-9]", "", line)
+
     calib = line[0] + line[-1]
     return int(calib)
 
 data = [map_line(line) for line in data]
+
 print(sum(data))

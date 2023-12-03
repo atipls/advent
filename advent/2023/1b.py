@@ -4,15 +4,15 @@ import re
 data = get_input(1).splitlines()
 
 MAPPING = {
-    "one": 1,
-    "two": 2,
-    "three": 3,
-    "four": 4,
-    "five": 5,
-    "six": 6,
-    "seven": 7,
-    "eight": 8,
-    "nine": 9,
+    "one": "1",
+    "two": "2",
+    "three": "3",
+    "four": "4",
+    "five": "5",
+    "six": "6",
+    "seven": "7",
+    "eight": "8",
+    "nine": "9",
 }
 
 def build_number(line: str) -> str:
@@ -21,7 +21,7 @@ def build_number(line: str) -> str:
             yield char
 
         mapping = (
-            str(MAPPING[word]) for word in MAPPING 
+            MAPPING[word] for word in MAPPING 
             if line[index:index+len(word)] == word
         )
 

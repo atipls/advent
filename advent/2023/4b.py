@@ -81,7 +81,6 @@ def process_scratches() -> int:
 
                 for extra in range(matches):
                     # We won a new scratchcard
-                    print("We won a copy of scratchcard", index + extra + 2)
                     num_scratchcards[index + extra + 1] += 1
 
     return num_scratchcards_processed

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from dataclasses import dataclass
 from advent.aoc import get_input
-from math import prod
+from math import prod, floor, ceil
 data = get_input(6)
 if False: 
     data = """Time:      7  15   30
@@ -16,29 +16,24 @@ class BoatRaceRecord:
 
     def __repr__(self):
         return f"BoatRaceRecord({self.time_ms}, {self.record_distance})"
-    
-    def get_final_distance(self, accel_time_ms: int) -> int:
-        remaining = self.time_ms - accel_time_ms
-        if remaining < 0:
-            return 0
-        return remaining * accel_time_ms
 
-    def accelerations_that_beat_the_record(self) -> list[int]:
-        for accel_time_ms in range(1, self.time_ms):
-            if self.get_final_distance(accel_time_ms) > self.record_distance:
-                yield accel_time_ms
+    def number_of_accels_that_beat_the_record(self) -> int:
+        minimum = (self.time_ms - (self.time_ms ** 2 - 4 * self.record_distance) ** 0.5) / 2
+        maximum = (self.time_ms + (self.time_ms ** 2 - 4 * self.record_distance) ** 0.5) / 2
 
-def get_records() -> list[BoatRaceRecord]:
+        minimum = floor(minimum + 1) # have to beat the record
+        maximum = ceil(maximum - 1) # can't go over the time
+
+        return maximum - minimum + 1
+
+def get_record() -> BoatRaceRecord:
     time = lines[0].strip("Time: ")
     time = time.replace(" ", "")
 
     distance = lines[1].strip("Distance: ")
     distance = distance.replace(" ", "")
 
-    yield BoatRaceRecord(int(time), int(distance))
+    return BoatRaceRecord(int(time), int(distance))
 
-
-for record in get_records():
-    print(record, "can be beaten by accelerations of", list(record.accelerations_that_beat_the_record()), "ms")
-
-print(prod(len(list(accels)) for accels in (record.accelerations_that_beat_the_record() for record in get_records())))
+record = get_record()
+print(record.number_of_accels_that_beat_the_record())

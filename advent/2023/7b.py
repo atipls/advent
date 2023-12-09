@@ -23,7 +23,26 @@ class DeckType(enum.IntEnum):
     THREE_OF_A_KIND = 4
     FOUR_OF_A_KIND = 5
     FIVE_OF_A_KIND = 6
-    
+       
+    def to_str(self) -> str:
+        match self:
+            case DeckType.HIGH_CARD:
+                return "High Card"
+            case DeckType.ONE_PAIR:
+                return "One Pair"
+            case DeckType.TWO_PAIR:
+                return "Two Pair"
+            case DeckType.FULL_HOUSE:
+                return "Full House"
+            case DeckType.THREE_OF_A_KIND:
+                return "Three of a Kind"
+            case DeckType.FOUR_OF_A_KIND:
+                return "Four of a Kind"
+            case DeckType.FIVE_OF_A_KIND:
+                return "Five of a Kind"
+            case _:
+                return "Unknown"
+            
 
 @dataclass
 class CamelCard:
@@ -31,7 +50,7 @@ class CamelCard:
     bid: int
     rank: int = None
     
-    def classification(self) -> int:
+    def classification(self) -> DeckType:
         counter = Counter(self.cards)
 
         if "J" in counter:
@@ -73,7 +92,7 @@ class CamelCard:
         return DeckType.HIGH_CARD
 
     def __repr__(self):
-        return f"CamelCard({self.cards}, {self.bid}, rank={self.rank}, classification={self.classification()})"
+        return f"CamelCard('{"".join(self.cards)}', {self.bid}, rank={self.rank}, classification={self.classification().to_str()})"
     
 
 def parse_camel_cards() -> list[CamelCard]:
@@ -102,7 +121,7 @@ def compare_cards(card1: CamelCard, card2: CamelCard) -> int:
             return -1
         
     # Same cards, doesn't matter
-    return 0    
+    return 0
     
 
 # Order the cards by classification and then by rank/strength

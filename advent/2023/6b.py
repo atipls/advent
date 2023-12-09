@@ -21,8 +21,8 @@ class BoatRaceRecord:
         minimum = (self.time_ms - (self.time_ms ** 2 - 4 * self.record_distance) ** 0.5) / 2
         maximum = (self.time_ms + (self.time_ms ** 2 - 4 * self.record_distance) ** 0.5) / 2
 
-        minimum = floor(minimum + 1) # have to beat the record
-        maximum = ceil(maximum - 1) # can't go over the time
+        minimum = floor(minimum + 1)
+        maximum = ceil(maximum - 1)
 
         return maximum - minimum + 1
 
